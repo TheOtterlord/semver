@@ -12,8 +12,16 @@ const { title } = Astro.props;
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="description" content="A visual tool for writing NPM semver ranges" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
+
+    <meta property="og:title" content={title} />
+    <meta property="og:type" content="website" />
+    <meta property="og:description" content="A visual tool for writing NPM semver ranges" />
+    <meta property="og:image" content="/og.png" />
+    <meta property="og:url" content={Astro.request.url} />
+    <meta name="twitter:card" content="summary_large_image" />
 	</head>
 	<body>
 		<slot />

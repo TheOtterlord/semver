@@ -13,3 +13,5 @@
     <img src="https://img.shields.io/github/stars/TheOtterlord/semver?style=social" alt="stars">
   </a>
 </p>
+
+This is a simple clone of [npm's semver calculator](https://semver.npmjs.com/), written in [Astro](https://astro.build/) with [Tailwind](https://tailwindcss.com/) & hosted on [Vercel](https://vercel.com/).
