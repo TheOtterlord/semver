@@ -104,6 +104,8 @@ export const prerender = true;
       selected = pkg.value
       versions = await fetch(`/api/${encodeURIComponent(selected)}`).then(res => res.json()).then(res => res.versions)
       update()
+      // @ts-ignore
+      plausible('Package', {props: {package: selected}})
     })
   </script>
 </Layout>
