@@ -79,7 +79,7 @@ export const prerender = true;
     }
     
     let selected = pkg.value
-    let versions = await fetch('/api/lodash').then(res => res.json()).then(res => res.versions)
+    let versions = await fetch(`/api/${btoa("lodash")}`).then(res => res.json()).then(res => res.versions)
     console.log(versions)
 
     update()
@@ -93,7 +93,7 @@ export const prerender = true;
         pkgName.innerText = pkg.value
         pkgLink.href = `https://npmjs.com/package/${pkg.value}`
         selected = pkg.value
-        versions = await fetch(`/api/${encodeURIComponent(selected)}`).then(res => res.json()).then(res => res.versions)
+        versions = await fetch(`/api/${btoa(selected)}`).then(res => res.json()).then(res => res.versions)
         update()
       }
     })
@@ -102,7 +102,7 @@ export const prerender = true;
       pkgName.innerText = pkg.value
       pkgLink.href = `https://npmjs.com/package/${pkg.value}`
       selected = pkg.value
-      versions = await fetch(`/api/${encodeURIComponent(selected)}`).then(res => res.json()).then(res => res.versions)
+      versions = await fetch(`/api/${btoa(selected)}`).then(res => res.json()).then(res => res.versions)
       update()
       // @ts-ignore
       plausible('Package', {props: {package: selected}})
