@@ -1,7 +1,8 @@
 import type { APIRoute } from "astro"
 
-export const get: APIRoute = async ({ params }) => {
-  const { selected } = params 
+export const GET: APIRoute = async ({ params, ...args }) => {
+  const { selected } = params
+  console.log(args)
   
   if (selected === undefined) return new Response("Bad Request", { status: 400 })
   
