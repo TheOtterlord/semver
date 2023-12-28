@@ -6,25 +6,42 @@ export interface Props {
 const { title } = Astro.props;
 ---
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="description" content="A visual tool for writing NPM semver ranges" />
+		<meta
+			name="description"
+			content="A visual tool for writing NPM semver ranges"
+		/>
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 
-    <meta property="og:title" content={title} />
-    <meta property="og:type" content="website" />
-    <meta property="og:description" content="A visual tool for writing NPM semver ranges" />
-    <meta property="og:image" content="/og.png" />
-    <meta property="og:url" content={Astro.request.url} />
-    <meta name="twitter:card" content="summary_large_image" />
+		<meta property="og:title" content={title} />
+		<meta property="og:type" content="website" />
+		<meta
+			property="og:description"
+			content="A visual tool for writing NPM semver ranges"
+		/>
+		<meta property="og:image" content="/og.png" />
+		<meta property="og:url" content={Astro.request.url} />
+		<meta name="twitter:card" content="summary_large_image" />
 
-    <script defer data-domain="semver.otterlord.dev" src="https://home.otterlord.dev/js/script.js"></script>
-    <script is:inline>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
+		<script
+			defer
+			data-domain="semver.otterlord.dev"
+			src="https://home.otterlord.dev/js/script.js"></script>
+		<script is:inline>
+			window.plausible =
+				window.plausible ||
+				function () {
+					(window.plausible.q = window.plausible.q || []).push(
+						arguments,
+					);
+				};
+		</script>
 	</head>
 	<body>
 		<slot />
