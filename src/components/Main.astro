@@ -1,0 +1,35 @@
+---
+interface Props {
+    pkg: string;
+}
+
+const { pkg } = Astro.props;
+---
+
+<main
+    class="min-h-screen dark:bg-gradient-to-b dark:from-slate-900 dark:to-purple-900 dark:text-white"
+>
+    <div class="w-full flex max-w-xl mx-auto flex-col gap-y-4 p-4">
+        <slot />
+        <p class="text-center text-purple-600 dark:text-white">
+            <a
+                id="pkg-link"
+                href=`https://npmjs.com/package/${pkg}`
+                target="_blank"
+                rel="noopener noreferrer"
+                ><code id="pkg-name">{pkg}</code> on npmjs.com</a
+            >
+        </p>
+    </div>
+
+    <slot name="versions" />
+
+    <p class="p-4 text-center dark:text-zinc-300">
+        Check out the <a
+            class="text-purple-600 dark:text-white underline"
+            href="https://github.com/npm/node-semver#versions"
+            target="_blank"
+            rel="noopener noreferrer">Semver package</a
+        > for more information.
+    </p>
+</main>
