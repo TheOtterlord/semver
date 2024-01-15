@@ -33,15 +33,6 @@ const { title } = Astro.props;
 			defer
 			data-domain="semver.otterlord.dev"
 			src="https://home.otterlord.dev/js/script.js"></script>
-		<script is:inline>
-			window.plausible =
-				window.plausible ||
-				function () {
-					(window.plausible.q = window.plausible.q || []).push(
-						arguments,
-					);
-				};
-		</script>
 	</head>
 	<body>
 		<slot />
