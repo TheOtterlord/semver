@@ -11,13 +11,13 @@ const { pkg } = Astro.props;
 >
     <div class="w-full flex max-w-xl mx-auto flex-col gap-y-4 p-4">
         <slot />
-        <p class="text-center text-purple-600 dark:text-white hover:underline">
+        <p class="text-center text-purple-600 dark:text-white">
             <a
                 id="pkg-link"
                 href=`https://npmjs.com/package/${pkg}`
                 target="_blank"
                 rel="noopener noreferrer"
-                ><span id="pkg-name">{pkg}</span> on npmjs.com</a
+                ><code id="pkg-name">{pkg}</code> on npmjs.com</a
             >
         </p>
     </div>
@@ -26,7 +26,7 @@ const { pkg } = Astro.props;
 
     <p class="p-4 text-center dark:text-zinc-300">
         Check out the <a
-            class="text-purple-600 dark:text-white hover:underline"
+            class="text-purple-600 dark:text-white underline"
             href="https://github.com/npm/node-semver#versions"
             target="_blank"
             rel="noopener noreferrer">Semver package</a

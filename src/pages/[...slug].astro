@@ -21,7 +21,7 @@ const versions = Object.keys(manifest.versions);
 const titlePrefix = searchParams.get("package") ? `${pkg} | ` : " "
 ---
 
-<Layout title=`${titlePrefix}NPM Semver Calculator`>
+<Layout title={`${titlePrefix}NPM Semver Calculator`}>
     <Main {pkg}>
         <Header />
         <form class="contents">
@@ -57,7 +57,7 @@ const titlePrefix = searchParams.get("package") ? `${pkg} | ` : " "
         <Fragment slot="versions">
             <ul
                 id="versions"
-                class="p-4 min-h-[24rem] columns-[10rem] [&_li]:block [&_code]:text-center [&_li]:w-fit [&_li]:mx-auto [&_code]:bg-zinc-100 dark:[&_code]:bg-zinc-800 [&_code]:text-zinc-500 dark:[&_code]:text-zinc-300 [&_code]:px-2 [&_code]:rounded [&_code]:border-2 [&_code]:border-transparent data-[active]:[&_code]:bg-green-200 dark:data-[active]:[&_code]:bg-green-800 data-[active]:[&_code]:text-green-700 dark:data-[active]:[&_code]:text-green-400 data-[active]:[&_code]:border-green-700 space-y-2"
+                class="p-4 min-h-[24rem] columns-[10rem] [&_li]:block [&_code]:text-center [&_li]:w-fit [&_li]:mx-auto [&_code]:bg-zinc-100 dark:[&_code]:bg-zinc-800 [&_code]:text-zinc-500 dark:[&_code]:text-zinc-300 [&_code]:px-2 [&_code]:rounded [&_code]:border-2 [&_code]:border-transparent data-[active]:[&_code]:bg-green-200 dark:data-[active]:[&_code]:bg-green-900 data-[active]:[&_code]:text-green-700 dark:data-[active]:[&_code]:text-green-400 data-[active]:[&_code]:border-green-700 space-y-2"
             >
                 {
                     versions.map((version) => (
