@@ -9,6 +9,7 @@ import type { Manifest } from "@npm/types";
 const { searchParams } = Astro.url;
 const pkg = searchParams.get("package") ?? "lodash";
 const range = searchParams.get("range") ?? "^3.2.0";
+const filter = !!searchParams.get('filter')
 
 const response = await fetch(`https://registry.npmjs.org/${pkg}`);
 if (response.ok === false) {
@@ -17,77 +18,87 @@ if (response.ok === false) {
     });
 }
 const manifest: Manifest = await response.json();
-const versions = Object.keys(manifest.versions);
+let versions = Object.keys(manifest.versions);
 const titlePrefix = searchParams.get("package") ? `${pkg} | ` : " "
+
+if (filter) versions = versions.filter(version => !!version.match(/^(P<major>0|[0-9]\d*)\.(P<minor>0|[0-9]\d*)\.(P<patch>0|[0-9]\d*)$/gm))
 ---
 
 <Layout title={`${titlePrefix}NPM Semver Calculator`}>
-    <Main {pkg}>
-        <Header />
-        <form class="contents">
-            <fieldset class="flex flex-wrap gap-x-2">
-                <label for="pkg" class="w-full my-1"
-                    >enter a package</label
-                >
-                <input
-                    id="pkg"
-                    name="package"
-                    type="text"
-                    value={pkg}
-                    class="dark:shadow flex-grow p-2 rounded dark:bg-slate-700 outline-none border-2 border-zinc-200 dark:border-transparent focus:border-blue-500 dark:focus:border-blue-300"
-                />
-                <button
-                    class="dark:shadow flex-shrink bg-indigo-600 hover:bg-indigo-500 text-white dark:bg-indigo-800 dark:hover:bg-indigo-700 px-6 py-2 rounded"
-                    >Load</button
-                >
-            </fieldset>
-            <fieldset class="flex flex-col">
-                <label for="range" class="w-full my-1"
-                    >enter a semver range</label
-                >
-                <input
-                    id="range"
-                    name="range"
-                    type="text"
-                    value={range}
-                    class="p-2 rounded dark:shadow dark:bg-slate-700 outline-none border-2 border-zinc-200 dark:border-transparent focus:border-blue-500 dark:focus:border-blue-300"
-                />
-            </fieldset>
-        </form>
-        <Fragment slot="versions">
-            <ul
-                id="versions"
-                class="p-4 min-h-[24rem] columns-[10rem] [&_li]:block [&_code]:text-center [&_li]:w-fit [&_li]:mx-auto [&_code]:bg-zinc-100 dark:[&_code]:bg-zinc-800 [&_code]:text-zinc-500 dark:[&_code]:text-zinc-300 [&_code]:px-2 [&_code]:rounded [&_code]:border-2 [&_code]:border-transparent data-[active]:[&_code]:bg-green-200 dark:data-[active]:[&_code]:bg-green-900 data-[active]:[&_code]:text-green-700 dark:data-[active]:[&_code]:text-green-400 data-[active]:[&_code]:border-green-700 space-y-2"
-            >
-                {
-                    versions.map((version) => (
-                        <li>
-                            <code data-active={satisfies(version, range)}>
-                                {version}
-                            </code>
-                        </li>
-                    ))
-                }
-            </ul>
-        </Fragment>
-    </Main>
-    <Article />
+  <Main {pkg}>
+    <Header />
+    <form class="contents">
+      <fieldset class="flex flex-wrap gap-x-2">
+        <label for="pkg" class="w-full my-1"
+          >enter a package</label
+        >
+        <input
+          id="pkg"
+          name="package"
+          type="text"
+          value={pkg}
+          class="dark:shadow flex-grow p-2 rounded dark:bg-slate-700 outline-none border-2 border-zinc-200 dark:border-transparent focus:border-blue-500 dark:focus:border-blue-300"
+        />
+        <button
+          class="dark:shadow flex-shrink bg-indigo-600 hover:bg-indigo-500 text-white dark:bg-indigo-800 dark:hover:bg-indigo-700 px-6 py-2 rounded"
+          >Load</button
+        >
+      </fieldset>
+      <fieldset class="flex flex-col">
+        <label for="range" class="w-full my-1"
+          >enter a semver range</label
+        >
+        <input
+          id="range"
+          name="range"
+          type="text"
+          value={range}
+          class="p-2 rounded dark:shadow dark:bg-slate-700 outline-none border-2 border-zinc-200 dark:border-transparent focus:border-blue-500 dark:focus:border-blue-300"
+        />
+      </fieldset>
+      <fieldset class="flex flex-row-reverse gap-2 justify-center">
+        <label for="filter">Hide unstable versions</label>
+        <input type="checkbox" name="filter" {...{ checked: filter ? '' : undefined }}>
+      </fieldset>
+    </form>
+    <Fragment slot="versions">
+      <ul
+        id="versions"
+        class="p-4 min-h-[24rem] columns-[10rem] [&_li]:block [&_code]:text-center [&_li]:w-fit [&_li]:mx-auto [&_code]:bg-zinc-100 dark:[&_code]:bg-zinc-800 [&_code]:text-zinc-500 dark:[&_code]:text-zinc-300 [&_code]:px-2 [&_code]:rounded [&_code]:border-2 [&_code]:border-transparent data-[active]:[&_code]:bg-green-200 dark:data-[active]:[&_code]:bg-green-900 data-[active]:[&_code]:text-green-700 dark:data-[active]:[&_code]:text-green-400 data-[active]:[&_code]:border-green-700 space-y-2"
+      >
+        {
+          versions.map((version) => (
+            <li>
+              <code data-active={satisfies(version, range)}>
+                {version}
+              </code>
+            </li>
+          ))
+        }
+      </ul>
+    </Fragment>
+  </Main>
+  <Article />
 </Layout>
 
 <script>
-    import { satisfies } from "semver";
+  import { satisfies } from "semver";
 
-    document.querySelector("form")!.addEventListener("submit", ({ target }) => {
-        (target as HTMLFormElement).querySelector("button")!.disabled = true;
-    });
+  const checkbox = document.querySelector('input[type=checkbox]') as HTMLInputElement
 
-    document
-        .querySelector<HTMLInputElement>("input#range")!
-        .addEventListener("input", ({ target }) => {
-            const { value: range } = target as HTMLInputElement;
-            {
+  document.querySelector("form")!.addEventListener("submit", ({ target }) => {
+    (target as HTMLFormElement).querySelector("button")!.disabled = true;
+  });
+
+  document
+    .querySelector<HTMLInputElement>("input#range")!
+    .addEventListener("input", ({ target }) => {
+      const { value: range } = target as HTMLInputElement;
+      const { value: filter } = checkbox as HTMLInputElement;
+      {
                 const url = new URL(location.href);
                 url.searchParams.set("range", range);
+                url.searchParams.set("filter", filter);
                 history.replaceState(null, "", url);
             }
             for (const li of document.querySelector<HTMLUListElement>(
